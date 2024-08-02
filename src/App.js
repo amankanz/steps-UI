@@ -7,9 +7,24 @@ const messages = [
 ];
 
 export default function App() {
+  return (
+    <>
+      <Steps />
+      <StepMessage step={1}>
+        <p>Passing content</p>
+        <p>🏃🏽‍♂️</p>
+      </StepMessage>
+      <StepMessage step={2}>
+        <p>Read children prop</p>
+        <p>👶🏽</p>
+      </StepMessage>
+    </>
+  );
+}
+
+function Steps() {
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(true);
-  // const [test, setTest] = useState({ name: "Ziha" });
 
   function handlePrevious() {
     if (step > 1) setStep((s) => s - 1);
@@ -18,17 +33,10 @@ export default function App() {
   function handleNext() {
     if (step < 3) {
       setStep((s) => s + 1);
-      // setStep((s) => s + 1);
     }
-    // setTest({ name: "Kaneza" });
   }
-
-  // function handleClose() {
-  //   if (isOpen) setIsOpen(false);
-  // }
-
   return (
-    <>
+    <div>
       <button className="close" onClick={() => setIsOpen((is) => !is)}>
         &times;
       </button>
@@ -40,27 +48,49 @@ export default function App() {
             <div className={step >= 3 ? "active" : ""}>3</div>
           </section>
 
-          <p className="message">
-            Steps {step}: {messages[step - 1]}
-            {/* {test.name} */}
-          </p>
+          <StepMessage step={step}>
+            {messages[step - 1]}
+            <span className="buttons">
+              <Button
+                textColor="#fff"
+                bgColor="#23f8"
+                onClick={() => alert(`${messages[step - 1]}`)}
+              >
+                What should i do?
+              </Button>
+            </span>
+          </StepMessage>
 
           <section className="buttons">
-            <button
-              style={{ backgroundColor: "#7950f2", color: "#fff" }}
-              onClick={handlePrevious}
-            >
-              Previous
-            </button>
-            <button
-              style={{ backgroundColor: "#7950f2", color: "#fff" }}
-              onClick={handleNext}
-            >
-              Next
-            </button>
+            <Button textColor="#fff" bgColor="#7950f2" onClick={handlePrevious}>
+              <span>👈🏽</span>Previous
+            </Button>
+            <Button textColor="#fff" bgColor="#7950f2" onClick={handleNext}>
+              Next <span>👉🏽</span>
+            </Button>
           </section>
         </main>
       )}
-    </>
+    </div>
+  );
+}
+
+function StepMessage({ step, children }) {
+  return (
+    <div className="message">
+      <h3>Steps {step}:</h3>
+      {children}
+    </div>
+  );
+}
+
+function Button({ textColor, bgColor, onClick, children }) {
+  return (
+    <button
+      style={{ backgroundColor: bgColor, color: textColor }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 }
